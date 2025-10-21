@@ -20,7 +20,9 @@ pipeline {
 				// Add deploy steps here
 			}
 		}
-	} post {
+	}
+	
+	post {
 		always {
 			echo 'This will always run after the stages.'
 		}
