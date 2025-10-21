@@ -1,6 +1,10 @@
 pipeline {
 	agent none
 
+	environment {
+		DOCKER_IMAGE = "juliansalomon/currency-exchange-microservice"
+	}
+
 	tools {
 		dockerTool 'myDocker'
 	}
@@ -56,6 +60,11 @@ pipeline {
 						stash includes: 'target/*.jar', name: 'app-jar'
 					}
 				}
+				stage('Archive') {
+					steps {
+						archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+					}
+				}
 			}
 		}
 
@@ -66,7 +75,7 @@ pipeline {
 					steps {
 						unstash 'app-jar'
 						script {
-							dockerImage = docker.build("juliansalomon/currency-exchange-microservice:${env.BUILD_TAG}")
+							dockerImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_TAG}")
 						}
 					}
 				}
@@ -76,6 +85,7 @@ pipeline {
 						script {
 							docker.withRegistry('', 'dockerhub') {
 								dockerImage.push()
+								dockerImage.push('latest')
 							}
 						}
 					}
@@ -87,6 +97,7 @@ pipeline {
 	post {
 		always {
 			echo 'This will always run after the stages.'
+			junit '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
 		}
 		success {
 			echo 'This will run only if the pipeline succeeds.'
