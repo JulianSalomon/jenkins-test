@@ -61,6 +61,11 @@ pipeline {
 							}
 						}
 					}
+					post {
+						always {
+							junit '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
+						}
+					}
 				}
 				stage('Package') {
 					steps {
@@ -105,7 +110,6 @@ pipeline {
 	post {
 		always {
 			echo 'This will always run after the stages.'
-			junit '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
 		}
 		success {
 			echo 'This will run only if the pipeline succeeds.'
