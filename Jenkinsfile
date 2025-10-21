@@ -38,6 +38,30 @@ pipeline {
 				sh "mvn failsafe:integration-test failsafe:verify"
 			}
 		}
+
+		stage('Package') {
+			steps {
+				sh 'mvn package -DskipTests=true'
+			}
+		}
+
+		stage('Docker Build') {
+			steps {
+				script {
+					dockerImage = docker.build("juliansalomon/currency-exchange-microservice:${env.BUILD_TAG}")
+				}
+			}
+		}
+
+		stage('Docker Push') {
+			steps {
+				script {
+					docker.withRegistry('', 'dockerhub') {
+						dockerImage.push()
+					}
+				}
+			}
+		}
 	}
 	
 	post {
