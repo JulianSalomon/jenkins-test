@@ -20,6 +20,7 @@ pipeline {
 				docker {
 					image 'maven:3.9.11-eclipse-temurin-8'
 					args '-v maven-repo:/root/.m2'
+					reuseNode true
 				}
 			}
 			stages {
