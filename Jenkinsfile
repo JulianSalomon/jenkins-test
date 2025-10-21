@@ -42,11 +42,16 @@ pipeline {
 		stage('Package') {
 			steps {
 				sh 'mvn package -DskipTests=true'
+				stash includes: 'target/*.jar', name: 'app-jar'
 			}
 		}
 
+		stage('Docker Operations') {
+			agent any
+			stages {
 		stage('Docker Build') {
 			steps {
+						unstash 'app-jar'
 				script {
 					dockerImage = docker.build("juliansalomon/currency-exchange-microservice:${env.BUILD_TAG}")
 				}
@@ -58,6 +63,8 @@ pipeline {
 				script {
 					docker.withRegistry('', 'dockerhub') {
 						dockerImage.push()
+							}
+						}
 					}
 				}
 			}
