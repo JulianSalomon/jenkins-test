@@ -16,13 +16,6 @@ pipeline {
 	}
 
 	stages {
-		stage('Prepare') {
-			agent any
-			steps {
-				sh 'mkdir -p $HOME/.m2 && chmod -R 777 $HOME/.m2'
-			}
-		}
-		
 		stage('Build and Test') {
 			agent {
 				docker {
