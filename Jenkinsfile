@@ -20,7 +20,9 @@ pipeline {
 	stages {
 		stage('Checkout') {
 			steps {
+				echo 'JAVA_HOME: ${env.JAVA_HOME}'
 				sh 'docker --version'
+				sh 'java -version'
 				sh 'mvn --version'
 
 				echo "PATH: $PATH"
