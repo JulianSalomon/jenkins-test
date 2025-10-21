@@ -6,6 +6,10 @@ pipeline {
 		}
 	}
 
+	tools {
+		dockerTool 'myDocker'
+	}
+
 	stages {
 		stage('Checkout') {
 			steps {
