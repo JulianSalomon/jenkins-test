@@ -7,6 +7,7 @@ pipeline {
 	}
 
 	environment {
+		DEBUG = 'true'
 		DOCKER_IMAGE = "juliansalomon/currency-exchange-microservice"
 	}
 
@@ -19,7 +20,7 @@ pipeline {
 			agent {
 				docker {
 					image 'maven:3.9.11-eclipse-temurin-8'
-					args '-v $HOME/.m2:/root/.m2'
+					args '-v /var/jenkins_home/.m2:/root/.m2'
 				}
 			}
 			stages {
@@ -32,6 +33,7 @@ pipeline {
 						sh 'mvn --version'
 
 						echo "PATH: $PATH"
+						echo "HOME: $HOME"
 						echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
 						echo "BUILD_ID: ${env.BUILD_ID}"
 						echo "BUILD_TAG: ${env.BUILD_TAG}"
