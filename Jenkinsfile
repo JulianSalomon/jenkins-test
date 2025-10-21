@@ -6,16 +6,16 @@ pipeline {
 		}
 	} */
 
-    environment {
-        JAVA_HOME = tool 'jdk8'
-        PATH = "$JAVA_HOME/bin:$PATH"
-    }
-
 	tools {
 		dockerTool 'myDocker'
 		maven 'myMaven'
 		jdk 'jdk8'
 	}
+
+    environment {
+        JAVA_HOME = tool 'jdk8'
+        PATH = "$JAVA_HOME/bin:$PATH"
+    }
 
 	stages {
 		stage('Checkout') {
