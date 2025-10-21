@@ -13,32 +13,36 @@ pipeline {
 	}
 
 	stages {
-		stage('Build') {
+		stage('Checkout') {
 			steps {
-				sh 'mvn --version'
 				sh 'docker --version'
-				echo 'Building...'
+				sh 'mvn --version'
+
 				echo "PATH: $PATH"
-				/* echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
+				echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
 				echo "BUILD_ID: ${env.BUILD_ID}"
 				echo "BUILD_TAG: ${env.BUILD_TAG}"
 				echo "BUILD_URL: ${env.BUILD_URL}"
 				echo "WORKSPACE: ${env.WORKSPACE}"
-				echo "JOB_NAME: ${env.JOB_NAME}" */
-				// sh 'mvn clean install -DskipTests'
-				// Add build steps here
+				echo "JOB_NAME: ${env.JOB_NAME}"
+			}
+		}
+		stage('Build') {
+			steps {
+				echo 'Building...'
+				sh 'mvn clean compile'
 			}
 		}
 		stage('Test') {
 			steps {
 				echo 'Testing...'
-				// Add test steps here
+				sh 'mvn test'
 			}
 		}
 		stage('Integration Test') {
 			steps {
 				echo 'Running Integration Tests...'
-				// Add deploy steps here
+				sh "mvn failsafe:integration-test failsafe:verify"
 			}
 		}
 	}
