@@ -1,14 +1,8 @@
 pipeline {
-	agent any
-	/* agent {
+	agent {
 		docker {
-			image 'maven:3.8.1'
+			image 'maven:3.9.11-eclipse-temurin-8'
 		}
-	} */
-
-	tools {
-		dockerTool 'myDocker'
-		maven 'myMaven'
 	}
 
 	stages {
