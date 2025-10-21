@@ -32,5 +32,11 @@ pipeline {
 		failure {
 			echo 'This will run only if the pipeline fails.'
 		}
+		changed {
+			echo 'This will run if there are changes in the codebase.'
+		}
+		unstable {
+			echo 'This will run if the build is unstable, e.g., tests fail.'
+		}
 	}
 }
