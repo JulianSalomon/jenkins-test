@@ -20,7 +20,7 @@ pipeline {
 			agent {
 				docker {
 					image 'maven:3.9.11-eclipse-temurin-8'
-					args '-v $HOME/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven" -u 1000:1000'
+					args '-v $HOME/.m2:/root/.m2 -u 1000:1000'
 				}
 			}
 			stages {
