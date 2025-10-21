@@ -1,6 +1,11 @@
 pipeline {
 	agent none
 
+	options {
+		timeout(time: 5, unit: 'MINUTES')
+		// buildDiscarder(logRotator(numToKeepStr: '10'))
+	}
+
 	environment {
 		DOCKER_IMAGE = "juliansalomon/currency-exchange-microservice"
 	}
@@ -19,6 +24,9 @@ pipeline {
 			}
 			stages {
 				stage('Checkout') {
+					when {
+						environment name: 'DEBUG', value: 'true'
+					}
 					steps {
 						sh 'java -version'
 						sh 'mvn --version'
