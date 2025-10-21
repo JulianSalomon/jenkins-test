@@ -16,11 +16,18 @@ pipeline {
 	}
 
 	stages {
+		stage('Prepare') {
+			agent any
+			steps {
+				sh 'mkdir -p $HOME/.m2 && chmod -R 777 $HOME/.m2'
+			}
+		}
+		
 		stage('Build and Test') {
 			agent {
 				docker {
 					image 'maven:3.9.11-eclipse-temurin-8'
-					args '-v $HOME/.m2:/root/.m2 -u 1000:1000'
+					args '-v $HOME/.m2:/root/.m2'
 				}
 			}
 			stages {
