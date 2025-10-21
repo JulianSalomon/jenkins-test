@@ -12,11 +12,6 @@ pipeline {
 		jdk 'jdk8'
 	}
 
-    environment {
-        JAVA_HOME = tool 'jdk8'
-        PATH = "$JAVA_HOME/bin:$PATH"
-    }
-
 	stages {
 		stage('Checkout') {
 			steps {
