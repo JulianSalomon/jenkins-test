@@ -26,16 +26,20 @@ pipeline {
 				sh 'mvn clean compile'
 			}
 		}
-		stage('Test') {
-			steps {
-				echo 'Testing...'
-				sh 'mvn test'
-			}
-		}
-		stage('Integration Test') {
-			steps {
-				echo 'Running Integration Tests...'
-				sh "mvn failsafe:integration-test failsafe:verify"
+		stage('Tests') {
+			parallel {
+				stage('Test') {
+					steps {
+						echo 'Testing...'
+						sh 'mvn test'
+					}
+				}
+				stage('Integration Test') {
+					steps {
+						echo 'Running Integration Tests...'
+						sh "mvn failsafe:integration-test failsafe:verify"
+					}
+				}
 			}
 		}
 
@@ -49,20 +53,20 @@ pipeline {
 		stage('Docker Operations') {
 			agent any
 			stages {
-		stage('Docker Build') {
-			steps {
+				stage('Docker Build') {
+					steps {
 						unstash 'app-jar'
-				script {
-					dockerImage = docker.build("juliansalomon/currency-exchange-microservice:${env.BUILD_TAG}")
+						script {
+							dockerImage = docker.build("juliansalomon/currency-exchange-microservice:${env.BUILD_TAG}")
+						}
+					}
 				}
-			}
-		}
 
-		stage('Docker Push') {
-			steps {
-				script {
-					docker.withRegistry('', 'dockerhub') {
-						dockerImage.push()
+				stage('Docker Push') {
+					steps {
+						script {
+							docker.withRegistry('', 'dockerhub') {
+								dockerImage.push()
 							}
 						}
 					}
