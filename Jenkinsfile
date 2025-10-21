@@ -6,18 +6,25 @@ pipeline {
 		}
 	} */
 
+	environment {
+		dockerHome = tool 'myDocker'
+		mavenHome = tool 'myMaven'
+		PATH = "$PATH:${dockerHome}/bin:${mavenHome}/bin"
+	}
+
 	stages {
 		stage('Build') {
 			steps {
-				// sh 'mvn --version'
+				sh 'mvn --version'
+				sh 'docker --version'
 				echo 'Building...'
-				echo "PATH: $PATH"
+				/* echo "PATH: $PATH"
 				echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
 				echo "BUILD_ID: ${env.BUILD_ID}"
 				echo "BUILD_TAG: ${env.BUILD_TAG}"
 				echo "BUILD_URL: ${env.BUILD_URL}"
 				echo "WORKSPACE: ${env.WORKSPACE}"
-				echo "JOB_NAME: ${env.JOB_NAME}"
+				echo "JOB_NAME: ${env.JOB_NAME}" */
 				// sh 'mvn clean install -DskipTests'
 				// Add build steps here
 			}
