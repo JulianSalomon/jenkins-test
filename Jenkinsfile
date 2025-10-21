@@ -20,7 +20,7 @@ pipeline {
 			agent {
 				docker {
 					image 'maven:3.9.11-eclipse-temurin-8'
-					args '-v /var/jenkins_home/.m2:/root/.m2 -u 0:0'
+					args '-v /var/jenkins_home/.m2:/root/.m2 -u $(id -u):$(id -g)'
 				}
 			}
 			stages {
